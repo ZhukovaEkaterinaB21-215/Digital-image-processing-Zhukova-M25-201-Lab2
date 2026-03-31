@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 #endif
 
     //runTest1D();
-    r//unTest1D_StepFunction();
+    //runTest1D_StepFunction();
    
     //runSinusoidImageTest();
     //runStripeImageTest();
