@@ -1,0 +1,6 @@
+sample_rate 512
+duration 1
+signal_length 512
+spectrum_length 512
+# sinusoids: frequency_Hz amplitude
+10 20

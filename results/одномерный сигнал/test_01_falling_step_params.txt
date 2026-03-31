@@ -1,0 +1,8 @@
+signal_type falling_step
+sample_rate 512
+duration 1
+signal_length 512
+step_position 0.5
+step_index 256
+amplitude_high 1 (before step)
+amplitude_low 0 (after step)
