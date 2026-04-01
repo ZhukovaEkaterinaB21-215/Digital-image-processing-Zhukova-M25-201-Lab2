@@ -29,13 +29,13 @@ int main(int argc, char* argv[]) {
     system("chcp 65001 >nul");
 #endif
 
-    //runTest1D();
-    //runTest1D_StepFunction();
+    runTest1D();
+    runTest1D_StepFunction();
    
-    //runSinusoidImageTest();
-    //runStripeImageTest();
-    //runGaussian2DTest();
-    //runDiagonalStripeTest();
+    runSinusoidImageTest();
+    runStripeImageTest();
+    runGaussian2DTest();
+    runDiagonalStripeTest();
     
     //Только прямое преобразование
     std::string inputPath = argv[1];

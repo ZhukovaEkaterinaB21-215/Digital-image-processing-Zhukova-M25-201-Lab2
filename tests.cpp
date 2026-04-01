@@ -58,16 +58,26 @@ void runSinusoidImageTest() {
     int centerJ = static_cast<int>(spectrum[0].size()) / 2;
 
     struct Peak { int x, y; int intensity; };
-    std::vector<Peak> peaks;
 
+    int peakCount = 0;
     for (size_t i = 0; i < spectrum.size(); ++i) {
         for (size_t j = 0; j < spectrum[0].size(); ++j) {
             if (spectrum[i][j] > 200) {
-                peaks.push_back({
-                    static_cast<int>(j) - centerJ,
-                    static_cast<int>(i) - centerI,
-                    static_cast<int>(spectrum[i][j])
-                    });
+                ++peakCount;
+            }
+        }
+    }
+
+    std::vector<Peak> peaks(peakCount);
+
+    int index = 0;
+    for (size_t i = 0; i < spectrum.size(); ++i) {
+        for (size_t j = 0; j < spectrum[0].size(); ++j) {
+            if (spectrum[i][j] > 200) {
+                peaks[index].x = static_cast<int>(j) - centerJ;
+                peaks[index].y = static_cast<int>(i) - centerI;
+                peaks[index].intensity = static_cast<int>(spectrum[i][j]);
+                ++index;
             }
         }
     }
@@ -87,7 +97,6 @@ void runSinusoidImageTest() {
         }
     }
 }
-
 
 
 void runStripeImageTest() {
@@ -131,16 +140,26 @@ void runStripeImageTest() {
     int centerJ = static_cast<int>(spectrum[0].size()) / 2;
 
     struct Peak { int x, y; int intensity; };
-    std::vector<Peak> peaks;
 
+    int peakCount = 0;
     for (size_t i = 0; i < spectrum.size(); ++i) {
         for (size_t j = 0; j < spectrum[0].size(); ++j) {
             if (spectrum[i][j] > 200) {
-                peaks.push_back({
-                    static_cast<int>(j) - centerJ,
-                    static_cast<int>(i) - centerI,
-                    static_cast<int>(spectrum[i][j])
-                    });
+                ++peakCount;
+            }
+        }
+    }
+
+    std::vector<Peak> peaks(peakCount);
+
+    int index = 0;
+    for (size_t i = 0; i < spectrum.size(); ++i) {
+        for (size_t j = 0; j < spectrum[0].size(); ++j) {
+            if (spectrum[i][j] > 200) {
+                peaks[index].x = static_cast<int>(j) - centerJ;
+                peaks[index].y = static_cast<int>(i) - centerI;
+                peaks[index].intensity = static_cast<int>(spectrum[i][j]);
+                ++index;
             }
         }
     }
@@ -206,16 +225,26 @@ void runGaussian2DTest() {
     int centerJ = static_cast<int>(spectrum[0].size()) / 2;
 
     struct Peak { int x, y; int intensity; };
-    std::vector<Peak> peaks;
 
+    int peakCount = 0;
     for (size_t i = 0; i < spectrum.size(); ++i) {
         for (size_t j = 0; j < spectrum[0].size(); ++j) {
             if (spectrum[i][j] > 200) {
-                peaks.push_back({
-                    static_cast<int>(j) - centerJ,
-                    static_cast<int>(i) - centerI,
-                    static_cast<int>(spectrum[i][j])
-                    });
+                ++peakCount;
+            }
+        }
+    }
+
+    std::vector<Peak> peaks(peakCount);
+
+    int index = 0;
+    for (size_t i = 0; i < spectrum.size(); ++i) {
+        for (size_t j = 0; j < spectrum[0].size(); ++j) {
+            if (spectrum[i][j] > 200) {
+                peaks[index].x = static_cast<int>(j) - centerJ;
+                peaks[index].y = static_cast<int>(i) - centerI;
+                peaks[index].intensity = static_cast<int>(spectrum[i][j]);
+                ++index;
             }
         }
     }
@@ -283,16 +312,26 @@ void runDiagonalStripeTest() {
     int centerJ = static_cast<int>(spectrum[0].size()) / 2;
 
     struct Peak { int x, y; int intensity; };
-    std::vector<Peak> peaks;
 
+    int peakCount = 0;
     for (size_t i = 0; i < spectrum.size(); ++i) {
         for (size_t j = 0; j < spectrum[0].size(); ++j) {
             if (spectrum[i][j] > 200) {
-                peaks.push_back({
-                    static_cast<int>(j) - centerJ,
-                    static_cast<int>(i) - centerI,
-                    static_cast<int>(spectrum[i][j])
-                    });
+                ++peakCount;
+            }
+        }
+    }
+
+    std::vector<Peak> peaks(peakCount);
+
+    int index = 0;
+    for (size_t i = 0; i < spectrum.size(); ++i) {
+        for (size_t j = 0; j < spectrum[0].size(); ++j) {
+            if (spectrum[i][j] > 200) {
+                peaks[index].x = static_cast<int>(j) - centerJ;
+                peaks[index].y = static_cast<int>(i) - centerI;
+                peaks[index].intensity = static_cast<int>(spectrum[i][j]);
+                ++index;
             }
         }
     }
@@ -387,6 +426,7 @@ void saveSignalGraph(const std::vector<double>& signal, const std::string& filen
 }
 
 
+
 void runTest1D() {
     const int SAMPLE_RATE = 512;
     const double DURATION = 1.0;
@@ -416,24 +456,21 @@ void runTest1D() {
         }
         signal[i] = FFT::Complex(val, 0.0);
     }
-
+ 
     std::vector<double> signalReal(N);
     for (int i = 0; i < N; ++i) {
         signalReal[i] = signal[i].real();
     }
     saveSignalGraph(signalReal, outputDir + "test_01_signal_graph.png");
 
-   
-    auto spectrum = fft.fft1D(signal, 1); 
+    auto spectrum = fft.fft1D(signal, 1);
     int specSize = static_cast<int>(spectrum.size());
-
-    
+ 
     std::vector<std::vector<double>> logSpectrum(1, std::vector<double>(specSize));
     double maxVal = 1e-10;
 
     for (int i = 0; i < specSize; ++i) {
         double amp = std::abs(spectrum[i]);
-
         logSpectrum[0][i] = std::log(1.0 + amp);
         if (logSpectrum[0][i] > maxVal) {
             maxVal = logSpectrum[0][i];
@@ -444,7 +481,6 @@ void runTest1D() {
         logSpectrum[0][i] = (logSpectrum[0][i] / maxVal) * 255.0;
     }
 
-   
     const int VIS_HEIGHT = 100;
     std::vector<std::vector<double>> spectrumVis(VIS_HEIGHT, std::vector<double>(specSize));
 
@@ -456,25 +492,30 @@ void runTest1D() {
     cv::Mat spectrumImage = ImageUtils::spectrumToImage(spectrumVis);
     ImageUtils::saveImage(spectrumImage, outputDir + "test_01_spectrum_1D.png");
 
-
     struct Peak { int index; double frequency; int intensity; };
-    std::vector<Peak> peaks;
 
-    const double THRESHOLD = 200.0; 
+    const double THRESHOLD = 200.0;
     const int NYQUIST = specSize / 2;
 
-
+    int peakCount = 0;
     for (int i = 0; i < NYQUIST; ++i) {
         if (logSpectrum[0][i] > THRESHOLD) {
-            double frequency = static_cast<double>(i) * SAMPLE_RATE / N;
-            peaks.push_back({
-                i,
-                frequency,
-                static_cast<int>(logSpectrum[0][i])
-                });
+            ++peakCount;
         }
     }
 
+    std::vector<Peak> peaks(peakCount);
+
+    int index = 0;
+    for (int i = 0; i < NYQUIST; ++i) {
+        if (logSpectrum[0][i] > THRESHOLD) {
+            double frequency = static_cast<double>(i) * SAMPLE_RATE / N;
+            peaks[index].index = i;
+            peaks[index].frequency = frequency;
+            peaks[index].intensity = static_cast<int>(logSpectrum[0][i]);
+            ++index;
+        }
+    }
     {
         std::ofstream f(outputDir + "test_01_peaks.txt");
         for (const auto& p : peaks) {
@@ -482,22 +523,19 @@ void runTest1D() {
         }
         f.close();
     }
-
-
     {
         std::ofstream f(outputDir + "test_01_params.txt");
         f << "sample_rate " << SAMPLE_RATE << "\n";
         f << "duration " << DURATION << "\n";
         f << "signal_length " << N << "\n";
         f << "spectrum_length " << specSize << "\n";
-        f << "# sinusoids: frequency_Hz amplitude\n";
+        f << "sinusoids: frequency_Hz amplitude\n";
         for (const auto& [freq, amp] : sinusoids) {
             f << freq << " " << amp << "\n";
         }
         f.close();
     }
 }
-
 
 void runTest1D_StepFunction() {
     const int SAMPLE_RATE = 512;
@@ -563,18 +601,29 @@ void runTest1D_StepFunction() {
     ImageUtils::saveImage(spectrumImage, outputDir + "test_01_falling_step_spectrum.png");
 
     struct Peak { int index; double frequency; int intensity; };
-    std::vector<Peak> peaks;
 
     const double THRESHOLD = 100.0;
     const int NYQUIST = specSize / 2;
 
+    int peakCount = 0;
     for (int i = 0; i < NYQUIST; ++i) {
         if (logSpectrum[0][i] > THRESHOLD) {
-            double frequency = static_cast<double>(i) * SAMPLE_RATE / N;
-            peaks.push_back({ i, frequency, static_cast<int>(logSpectrum[0][i]) });
+            ++peakCount;
         }
     }
 
+    std::vector<Peak> peaks(peakCount);
+
+    int index = 0;
+    for (int i = 0; i < NYQUIST; ++i) {
+        if (logSpectrum[0][i] > THRESHOLD) {
+            double frequency = static_cast<double>(i) * SAMPLE_RATE / N;
+            peaks[index].index = i;
+            peaks[index].frequency = frequency;
+            peaks[index].intensity = static_cast<int>(logSpectrum[0][i]);
+            ++index;
+        }
+    }
     {
         std::ofstream f(outputDir + "test_01_falling_step_peaks.txt");
         for (const auto& p : peaks) {
@@ -582,7 +631,6 @@ void runTest1D_StepFunction() {
         }
         f.close();
     }
-
     {
         std::ofstream f(outputDir + "test_01_falling_step_params.txt");
         f << "signal_type falling_step\n";
